@@ -2,16 +2,31 @@ name: Build TS3 Plugin
 
 on: [push, workflow_dispatch]
 
+permissions:
+  contents: write
+
 jobs:
   build-windows:
     runs-on: windows-latest
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: ilammy/msvc-dev-cmd@v1
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup MSVC Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: x64
-    - run: cl.exe /O2 /LD /Fe:TS3_Vinni_TV_Anti_AFK.dll plugin.cpp user32.lib
-    - uses: actions/upload-artifact@v4
+
+    - name: Compile 64-bit DLL
+      run: |
+        cl.exe /O2 /LD /Fe:TS3_Vinni_TV_Anti_AFK.dll plugin.cpp user32.lib
+
+    - name: Create Release Link
+      uses: softprops/action-gh-release@v2
       with:
-        name: TS3_Vinni_TV_Anti_AFK
-        path: TS3_Vinni_TV_Anti_AFK.dll
+        tag_name: v1.2-${{ github.run_number }}
+        name: TS3 Vinni TV Anti AFK v1.2
+        files: TS3_Vinni_TV_Anti_AFK.dll
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
