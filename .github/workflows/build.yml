@@ -10,12 +10,14 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v2
+    - name: Setup MSVC Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
 
     - name: Compile 64-bit DLL
       run: |
-        cl.exe /O2 /LD /Fe:vinni_afk_jumper_x64.dll plugin.cpp /user32.lib
+        cl.exe /O2 /LD /Fe:vinni_afk_jumper_x64.dll plugin.cpp user32.lib
 
     - name: Upload Finished Plugin
       uses: actions/upload-artifact@v4
