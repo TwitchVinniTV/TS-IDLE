@@ -1,0 +1,24 @@
+name: Build TS3 Plugin
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Compile 64-bit DLL
+      run: |
+        cl.exe /O2 /LD /Fe:vinni_afk_jumper_x64.dll plugin.cpp /user32.lib
+
+    - name: Upload Finished Plugin
+      uses: actions/upload-artifact@v4
+      with:
+        name: TS3-Plugin-Windows-x64
+        path: vinni_afk_jumper_x64.dll
