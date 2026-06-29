@@ -20,7 +20,6 @@ jobs:
         cl.exe /O2 /LD /Fe:TS3_Vinni_TV_Anti_AFK.dll plugin.cpp user32.lib
 
     - name: Create Release Link
-      target_arch: x64
       uses: softprops/action-gh-release@v2
       with:
         tag_name: v1.2-${{ github.run_number }}
